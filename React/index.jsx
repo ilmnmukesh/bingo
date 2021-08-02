@@ -7,7 +7,6 @@ const App=()=>{
     })
     let db= firebase.database()
     const [count, setCnt]=React.useState(0)
-    const [numbers, setNumbers]=React.useState([])
     const [len, setLen]=React.useState(5)
     const [server, setServer]=React.useState("")
     const [userId, setUserId]=React.useState("")
@@ -57,13 +56,13 @@ const App=()=>{
                     :
                     <div className="row">
                         <Left setWait={setWait} len={len} setLen={setLen} server={server } db={db} userId={userId} setCnt={setCnt}/>
-                        <Center wait={wait}  setScore={setScore} setWait={setWait} userId={userId} theme={theme} setTheme={setTheme} setIsComplete={setIsComplete} count={count} setCnt={setCnt} numbers={numbers} setNumbers={setNumbers} len={len} server={server} setLen={setLen}/>
-                        <Right/>
+                        <Center wait={wait}  setScore={setScore} setWait={setWait} userId={userId} theme={theme} setTheme={setTheme} setIsComplete={setIsComplete} count={count} setCnt={setCnt} len={len} server={server} setLen={setLen}/>
+                        <Right server={server} userId={userId}/>
                     </div>
                 )
                 :(
                     isReady?
-                    <Ready  server={server} setServer={setServer} userId={userId} setIsReady={setIsReady}  setIsStart={setIsStart} />
+                    <Ready  server={server} setLen={setLen} setServer={setServer} userId={userId} setIsReady={setIsReady}  setIsStart={setIsStart} />
                     :
                     <Start server={server} setServer={setServer} setIsReady={setIsReady} setUserId={setUserId}/>      
                 )

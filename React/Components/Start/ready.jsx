@@ -1,6 +1,6 @@
 const Ready=(props)=>{
     let sound = new Sound()
-    const {server, setServer,setIsReady, userId, setIsStart} = props//{server:"27775", userId:props.userId===""?"b2jp8":props.userId}
+    const {server, setServer,setIsReady, userId, setLen, setIsStart} = props//{server:"27775", userId:props.userId===""?"b2jp8":props.userId}
     const [nop, setNop]= React.useState(1)
     const [username, setUsername]= React.useState("")
     const [userReady, setUserReady]=React.useState(false)
@@ -93,6 +93,13 @@ const Ready=(props)=>{
                                 db.ref(server+"/score/"+userId).set(0)
                             }                            
                         })
+                        let length=data.length
+                        if(length<=3){
+                            length=5
+                        }else{
+                            length=length+2
+                        }
+                        setLen(length)
                         db.ref(server+"/entries").set(false)
                         db.ref(server+"/turn").set({current:data[0].id})
                         db.ref(server+"/players").set(data)

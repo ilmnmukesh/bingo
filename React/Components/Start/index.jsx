@@ -70,8 +70,8 @@ const Start=(props)=>{
     const generate=()=>{
         setGenerateLoading(true)
         let db=firebase.database()
-        //let code=Math.floor(Math.random()*90000) + 10000
-        let code = 99999
+        let code=Math.floor(Math.random()*90000) + 10000
+        //let code = 99999
         let id = (Math.random() + 1).toString(36).substring(7)
         let uc={
             user_created:id, 

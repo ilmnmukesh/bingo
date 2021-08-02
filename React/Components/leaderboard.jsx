@@ -3,6 +3,9 @@ const LeaderBoard=(props)=>{
     const [data, setData]=React.useState([])
    
     React.useEffect(()=>{
+        let sound = new Audio('../static/audio/victoryMusic.ogg')
+        if(audioPlay)
+            sound.play()
         db.ref(server).once("value", (e)=>{
             let d= e.val()
             let sortable = d.score
@@ -25,9 +28,33 @@ const LeaderBoard=(props)=>{
                 
             setData(ret)      
         })
+        Number.prototype.format = function(n) {
+            var r = new RegExp('\\d(?=(\\d{3})+' + (n > 0 ? '\\.' : '$') + ')', 'g');
+            return this.toFixed(Math.max(0, Math.floor(n))).replace(r, '$&,');
+        };
+        
+        return ()=>{
+            sound.pause()
+            sound.currentTime=0
+        }
     }, [])
+    React.useEffect(()=>{
+        if(data.length>0){
+            $('.count').each(function () {
+                $(this).prop('counter', 0).animate({
+                    counter: $(this).text()
+                }, {
+                    duration: 7500,
+                    easing: 'easeOutExpo',
+                    step: function (step) {
+                        $(this).text('' + step.format());
+                    }
+                });
+            });
+        }
+    }, [data])
     return (
-        <div className="offset-2 mt-2 pt-5 text-center col-8" style={{"font-family": `'Source Code Pro', monospace`}} >
+        <div className="mt-2 pt-5 text-center" style={{"font-family": `'Source Code Pro', monospace`}} >
             <p>LeaderBoard</p>
             <table className="table table-borderless">
                 <thead>
@@ -47,9 +74,9 @@ const LeaderBoard=(props)=>{
                                     
                                     score[e.id]===undefined || score[e.id]===0 
                                     ?
-                                    <td>+{e.score}</td>
+                                    <td>+<span className="count">{e.score}</span></td>
                                     :
-                                    <td>{score[e.id]}+{e.score-score[e.id]}</td>
+                                    <td>{score[e.id]}+<span className="count">{e.score-score[e.id]}</span></td>
 
                                 }
                             </tr>

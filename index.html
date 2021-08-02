@@ -71,8 +71,13 @@
             z-index: 1;
         }
         
+        html,
         body {
             overflow-x: hidden;
+        }
+        
+        body {
+            position: relative
         }
         /* #app:before {
             content: "";
@@ -97,6 +102,7 @@
             }
             .history-contaniner {
                 height: 400px !important;
+                overflow-y: scroll !important;
             }
         }
         
@@ -113,7 +119,7 @@
                 height: 92px;
             }
             .history-contaniner {
-                height: 70px !important;
+                height: 50px !important;
             }
         }
         

@@ -1,5 +1,6 @@
 const Left = (props)=>{
-    const {len, server, db ,userId, setWait, setCnt}=props
+    let sound = new Sound()
+    const {len, server, db ,userId, setWait}=props
     const [data, setData]=React.useState([])
     const [nop, setNop]= React.useState(1)
     const [turn, setTurn]= React.useState("")
@@ -40,35 +41,12 @@ const Left = (props)=>{
             })
             turnRef.on("child_changed", (e)=>{
                 if(e.val()===userId){
+                    sound.play("yourTurn")
                     setWait(false)
                 }else{
                     setWait(true)
                 }
-                // let count=0
-                // setCnt(c=>{
-                //     count=c
-                //     return c
-                // })
-                // console.log(count, e.val(), userId)
-                // if(e.val()===userId && count>=5){
-                //     setData(p=>{
-                //         if(p!==undefined && p.length>0){
-                //             let next=""
-                //             let nextIndex=-1
-                //             nextIndex=p.findIndex(f=>f.id==userId)
-                //             if(nextIndex!==-1){
-                //                 nextIndex++
-                //                 if(nextIndex>=p.length){
-                //                     nextIndex=0
-                //                 }
-                //                 next=p[nextIndex].id
-                //                 db.ref(server+"/turn").set({current:next})
-                //             }
-                            
-                //         }
-                //         return p
-                //     })
-                // }
+                
             
                 setData(p=>{
                     p.forEach((d, i)=>{
@@ -95,6 +73,9 @@ const Left = (props)=>{
             
             playerDeleteRef.on("child_removed", (_)=>{
                 db.ref(server+"/players").once("value", (e)=>{
+                    if(_.val()!==null && _.val().id!==userId){
+                        sound.play("left")
+                    }    
                     if(e.val()!==undefined && e.val()!==null && e.val().length>0)
                         setData(e.val())
                     else{
@@ -135,47 +116,29 @@ const Left = (props)=>{
                         
                     ))
                 }
-                {/* {data.map((e, i)=>{
-                    if(i===2){
-                        return (
-                            <div className="mt-2 offset-2 ">
-                                <button className={"bnt btn-sm form-control "+ colorActive[i]}>
-                                <i class="fa fa-play mr-2" aria-hidden="true"></i>
-                                    Player{i+1}: Mukesh
-                                </button>
-                            </div>
-                        )
-                    }
-                    return (
-                        <div className="mt-2 offset-2 ">
-                            <button className={"bnt btn-sm form-control "+ color[i]}>
-                            <i class="fa fa-user mr-2" aria-hidden="true"></i>
-                                Player{i+1}: Mukesh
-                            </button>
-                        </div>
-                    )
-
-                })} */}
                 
             </div>
             {
                 currentTurn!==undefined && currentTurn.id!==userId ?
                 <div>
                     <div className="mt-md-3 text-center">
-                        <div>Current Turn:</div>
-                        <div className="m-0 p-0 mt-2">
+                        <div className="row mt-0">
+                            <div className="col-8 text-right">
+                                Current Turn:
+                            </div>
+                            <div className="col-3 text-left">
+                                <div class="three-dot p-0 text-left">
+                                    <div class="bounce1 grey"></div>
+                                    <div class="bounce2 grey"></div>
+                                    <div class="bounce3 grey"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="m-0 p-0 mt-1">
                             <div className={"btn btn-sm "+(currentTurn.activeColor !==undefined?currentTurn.activeColor:"")}>
                                 <i class="fa fa-play mr-2" aria-hidden="true"></i>
                                 Player{currentTurn.index !==undefined?currentTurn.index:""}: {currentTurn.name !==undefined ?currentTurn.name:""}
                             </div>
-                        </div>    
-                    </div>
-                    <div className="text-center col-12">
-                        Wait
-                        <div class="three-dot p-0 text-center">
-                            <div class="bounce1 grey"></div>
-                            <div class="bounce2 grey"></div>
-                            <div class="bounce3 grey"></div>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 const Board=(props)=>{
     const {theme, setTheme}=props
-    const {numbers, setNumbers}=props
+    const [numbers, setNumbers]=React.useState([])
     const {len,setIsComplete, server, userId,  setScore}=props
     const [wd, setWd]=React.useState(window.innerWidth>=400? 400 : window.innerWidth - 60)
     const {wait, setWait}=props
@@ -228,7 +228,7 @@ const Board=(props)=>{
                         db.ref(server+"/score/"+userId).once("value", c=>{
                             let data = c.val()
                             let score =data===null?0:data
-                            if(cnt==5){
+                            if(cnt>=5){
                                 score += 75
                             }else{
                                 score += cnt*10
@@ -329,7 +329,7 @@ const Board=(props)=>{
             </div>
     )
     return (
-        <div className="col-12 text-center">
+        <div className="col-12 m-0 p-0 text-center">
             {RenderData}
             <Theme setTheme={setTheme}></Theme>
             <BingoKey count={count} theme={theme}/>
