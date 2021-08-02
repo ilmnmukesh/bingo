@@ -1,3 +1,4 @@
+let audioPlay = true
 class Sound {
     path = "../static/audio/"
     audio = {
@@ -11,11 +12,13 @@ class Sound {
         changeName: this.path + "activateBeep.ogg",
         changeColor: this.path + "ding.ogg",
         start: this.path + "boxingBell.ogg",
-        score: this.path + "score.ogg"
+        score: this.path + "score.ogg",
+        history: this.path + 'laser.ogg',
+        yourTurn: this.path + "spawn.ogg"
     }
 
     play(select) {
-        if (this.audio[select] !== undefined) {
+        if (audioPlay && this.audio[select] !== undefined) {
             if (select === "add") {
                 new Audio(this.audio[select][0]).play()
                 setTimeout(() => {
