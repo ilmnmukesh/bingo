@@ -211,7 +211,7 @@ const Board=(props)=>{
     }, [numbers])
 
     React.useEffect(()=>{
-        if(count>=1){
+        if(count>=5){
             let db = firebase.database()
             db.ref(server+"/history").once("value", hist=>{
                 let history= hist.val()
